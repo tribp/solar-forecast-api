@@ -4,7 +4,18 @@ from shared_code import weatherforecast, solar, ml
 import pandas as pd
 import json 
 
-""" test
+description = """
+This API helps you optimizing your Solar energy by predicting. 🚀
+
+### How ?
+
+* **clearsky** -> returns 15min Power(Watts) of the day for maximal condition - clear sky.
+* **forecast** -> returns 15min Power(Watts)  + weather for next 2 days.
+
+### Format of your solar Installation
+
+**Example:**
+
 {
   "date": "10-09-2022",
   "location": {
@@ -16,7 +27,7 @@ import json
   "azimuth": 180,
   "totalWattPeak": 7400,
   "wattInvertor": 5040,
-  "timezone": "Europe/brussels"
+  "timezone": "Europe/Brussels"
 }
 """
 
@@ -34,7 +45,22 @@ class Installation(BaseModel):
     wattInvertor: int
     timezone: str
 
-app = FastAPI()
+
+
+app = FastAPI(
+    title="solar-forecast-api",
+    description=description,
+    version="0.0.1",
+    contact={
+        "name": "Peter Tribout",
+        "url": "https://github.com/tribp",
+    },
+    license_info={
+        "name": "GNU General Public License v3.0",
+        "url": "https://www.gnu.org/licenses/gpl-3.0.en.html",
+    },
+
+)
 
 
 @app.get("/")
