@@ -17,14 +17,14 @@ This API helps you optimizing your Solar energy by predicting. 🚀
 **Example:**
 
 {
-  "date": "10-09-2022",
+  "date": "10-13-2022",
   "location": {
-    "lat": 51,
+    "lat": 51.0,
     "lng": 3.11
   },
   "altitude": 70,
   "tilt": 35,
-  "azimuth": 180,
+  "azimuth": 170,
   "totalWattPeak": 7400,
   "wattInvertor": 5040,
   "timezone": "Europe/Brussels"
@@ -32,18 +32,18 @@ This API helps you optimizing your Solar energy by predicting. 🚀
 """
 
 class Location(BaseModel):
-    lat: float
-    lng: float
+    lat: float = 51.0
+    lng: float = 3.11
 
 class Installation(BaseModel):
-    date: str
+    date: str = "10-13-2022"
     location: Location
-    altitude: int
-    tilt: int
-    azimuth: int
-    totalWattPeak: int
-    wattInvertor: int
-    timezone: str
+    altitude: int = 70
+    tilt: int = 35
+    azimuth: int = 170
+    totalWattPeak: int = 7400
+    wattInvertor: int = 5040
+    timezone: str = "Europe/Brussels"
 
 
 
