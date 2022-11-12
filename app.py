@@ -1,8 +1,10 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 from shared_code import weatherforecast, solar, ml
 import pandas as pd
 import json 
+import pytz
+from datetime import datetime
 
 description = """
 This API helps you optimizing your Solar energy by predicting. 🚀
@@ -17,14 +19,14 @@ This API helps you optimizing your Solar energy by predicting. 🚀
 **Example:**
 
 {
-  "date": "10-09-2022",
+  "date": "10-13-2022",
   "location": {
-    "lat": 51,
+    "lat": 51.0,
     "lng": 3.11
   },
   "altitude": 70,
   "tilt": 35,
-  "azimuth": 180,
+  "azimuth": 170,
   "totalWattPeak": 7400,
   "wattInvertor": 5040,
   "timezone": "Europe/Brussels"
@@ -32,18 +34,71 @@ This API helps you optimizing your Solar energy by predicting. 🚀
 """
 
 class Location(BaseModel):
-    lat: float
-    lng: float
+    lat: float = 51.0
+    lng: float = 3.11
+
+    @validator('lat')
+    def validate_lat(cls, value):
+        if not (-90 <= value <= 90):
+            raise ValueError("latitude must be between -180 and +180")
+        return value
+
+    @validator('lng')
+    def validate_lng(cls, value):
+        if not (-180 <= value <= 180):
+            raise ValueError("longitude must be between 0 and +90")
+        return value
 
 class Installation(BaseModel):
-    date: str
+    date: str = "10-13-2022"
     location: Location
-    altitude: int
-    tilt: int
-    azimuth: int
-    totalWattPeak: int
-    wattInvertor: int
-    timezone: str
+    altitude: int = 70
+    tilt: int = 35
+    azimuth: int = 170
+    totalWattPeak: int = 7400
+    wattInvertor: int = 5040
+    timezone: str = "Europe/Brussels"
+
+    @validator('date')
+    def validate_date(cls, value):
+        datetime.strptime(value, "%m-%d-%Y")
+        return value
+
+    @validator('altitude')
+    def validate_altitude(cls, value):
+        if not (0 <= value <= 5000):
+            raise ValueError("altitude must be between 0 and 5000")
+        return value
+
+    @validator('tilt')
+    def validate_tilt(cls, value):
+        if not (0 <= value < 90):
+            raise ValueError("tilt must be between 0 and 90")
+        return value
+
+    @validator('azimuth')
+    def validate_azimuth(cls, value):
+        if not (0 <= value < 360):
+            raise ValueError("azimuth must be between 0 and 360")
+        return value
+    
+    @validator('totalWattPeak')
+    def validate_totalWattPeak(cls, value):
+        if not (0 <= value < 20000):
+            raise ValueError("totalWattPeak must be between 0 and 20000")
+        return value
+    
+    @validator('wattInvertor')
+    def validate_wattInvertor(cls, value):
+        if not (0 <= value < 10000):
+            raise ValueError("wattInvertor must be between 0 and 10000")
+        return value
+    
+    @validator('timezone')
+    def validate_timezone(cls, value):
+        if not (value in pytz.all_timezones):
+            raise ValueError("the provided timezone seems not correct.")
+        return value
 
 
 
