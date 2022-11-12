@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set up Python version
         uses: actions/setup-python@v4
@@ -49,10 +49,13 @@ jobs:
 
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: python-app
           path: .
+          
+      - name: Check downloaded files and structure
+        run: ls -R
           
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
