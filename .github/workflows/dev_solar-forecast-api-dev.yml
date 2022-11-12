@@ -53,7 +53,10 @@ jobs:
         with:
           name: python-app
           path: .
-          
+      
+      - name: Display structure of downloaded files
+        run: ls -R
+        
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
