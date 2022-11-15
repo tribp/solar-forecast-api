@@ -1,6 +1,5 @@
 # Build and deploy of Python FastAPI app to Azure Web App
 
-
 name: Build & deploy to Azure Web App - Prod
 
 on:
@@ -19,18 +18,18 @@ jobs:
       - name: Set up Python 3.9
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
-          
+          python-version: "3.9"
+
       - name: Create and start virtual environment
         run: |
           python -m venv venv
           source venv/bin/activate
-      
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-        
+
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v3
         with:
@@ -38,12 +37,12 @@ jobs:
           path: |
             .
             !venv/
-           
+
   deploy:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'Production'
+      name: "Production"
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
@@ -51,23 +50,13 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: python-app
-          path: .  
-<<<<<<< HEAD
-<<<<<<< HEAD
-          
+          path: .
       - name: Check downloaded files and structure
         run: ls -R
-=======
->>>>>>> dev
-=======
-          
-      - name: Check downloaded files and structure
-        run: ls -R
->>>>>>> e2b0d8aa52d756d5c109e65888dfdbc45ca0d4aa
-          
-      - name: 'Deploy to Azure Web App'
+
+      - name: "Deploy to Azure Web App"
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'solar-forecast-api'
-          slot-name: 'Production'
+          app-name: "solar-forecast-api"
+          slot-name: "Production"
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D0C1FBBCF8E04357AAD0DED0DAF16803 }}
