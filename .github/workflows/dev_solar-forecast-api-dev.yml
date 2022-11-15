@@ -11,6 +11,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+       OPENWEATHERMAP_API_KEY: ${{secrets.OPENWEATHERMAP_API_KEY}}
 
     steps:
       - uses: actions/checkout@v3
@@ -24,11 +26,6 @@ jobs:
         run: |
           python -m venv venv
           source venv/bin/activate
-          
-      - name: Insert env variable for Openweathermap API key
-        run: |
-          export OPENWEATHERMAP_API_KEY=${{secrets.OPENWEATHERMAP_API_KEY}}
-          echo $OPENWEATHERMAP_API_KEY
 
       - name: Install dependencies
         run: |
