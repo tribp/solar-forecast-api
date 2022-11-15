@@ -4,6 +4,7 @@ install:
 	pip install -r requirements.txt
 format:
 	#format code
+	black *.py shared_code/*.py
 lint:
 	#pylint
 test:
