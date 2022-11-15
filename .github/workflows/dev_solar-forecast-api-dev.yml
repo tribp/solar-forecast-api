@@ -52,6 +52,8 @@ jobs:
 
       - name: Check downloaded files and structure
         run: ls -R
+      - name: Insert env variable for Openweathermap API key
+        run: export OPENWEATHERMAP_API_KEY=${{secrets.OPENWEATHERMAP_API_KEY}}
 
       - name: "Deploy to Azure Web App"
         uses: azure/webapps-deploy@v2
