@@ -28,12 +28,12 @@ jobs:
       - name: Install dependencies
         run: |
           make install
-      - name: Lint with pylint
-        run: |
-          make lint
       - name: Format code with black
         run: |
           make format
+      - name: Lint with pylint
+        run: |
+          make lint
       - name: Test with pytest
         run: |
           make test
