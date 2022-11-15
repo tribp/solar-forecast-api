@@ -7,7 +7,7 @@ format:
 	black *.py shared_code/*.py
 lint:
 	#pylint with no refactor or convention msg's
-	pylint --errors-only *.py shared_code/*.py
+	pylint --errors-only --disable=no-self-argument --extension-pkg-whitelist='pydantic' *.py shared_code/*.py
 test:
 	#test
 deploy:
