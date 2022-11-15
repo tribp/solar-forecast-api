@@ -27,7 +27,8 @@ jobs:
           
       - name: Insert env variable for Openweathermap API key
         run: |
-          export $OPENWEATHERMAP_API_KEY=${{secrets.OPENWEATHERMAP_API_KEY}}
+          export OPENWEATHERMAP_API_KEY=${{secrets.OPENWEATHERMAP_API_KEY}}
+          echo $OPENWEATHERMAP_API_KEY
 
       - name: Install dependencies
         run: |
