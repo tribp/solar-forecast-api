@@ -18,18 +18,16 @@ jobs:
       - name: Set up Python version
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: "3.9"
 
       - name: Create and start virtual environment
         run: |
           python -m venv venv
           source venv/bin/activate
-      
+
       - name: Install dependencies
         run: pip install -r requirements.txt
-        
-      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
-      
+
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v3
         with:
@@ -42,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'Production'
+      name: "Production"
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
@@ -51,27 +49,14 @@ jobs:
         with:
           name: python-app
           path: .
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> e2b0d8aa52d756d5c109e65888dfdbc45ca0d4aa
-          
+
       - name: Check downloaded files and structure
         run: ls -R
-          
-<<<<<<< HEAD
-=======
-      
-      - name: Display structure of downloaded files
-        run: ls -R
-        
->>>>>>> dev
-=======
->>>>>>> e2b0d8aa52d756d5c109e65888dfdbc45ca0d4aa
-      - name: 'Deploy to Azure Web App'
+
+      - name: "Deploy to Azure Web App"
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
-          app-name: 'solar-forecast-api-dev'
-          slot-name: 'Production'
+          app-name: "solar-forecast-api-dev"
+          slot-name: "Production"
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F0113A330FAD402CB768E1D2E03CDE29 }}
