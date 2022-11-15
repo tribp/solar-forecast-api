@@ -51,18 +51,9 @@ jobs:
         with:
           name: python-app
           path: .  
-<<<<<<< HEAD
-<<<<<<< HEAD
           
       - name: Check downloaded files and structure
         run: ls -R
-=======
->>>>>>> dev
-=======
-          
-      - name: Check downloaded files and structure
-        run: ls -R
->>>>>>> e2b0d8aa52d756d5c109e65888dfdbc45ca0d4aa
           
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
