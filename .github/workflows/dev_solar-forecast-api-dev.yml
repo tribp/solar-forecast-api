@@ -1,6 +1,4 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-# More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
+#  Build and deploy Python app to Azure Web App - solar-forecast-api-dev
 
 name: Build & deploy Azure Web App - Dev
 
@@ -54,16 +52,22 @@ jobs:
           name: python-app
           path: .
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> e2b0d8aa52d756d5c109e65888dfdbc45ca0d4aa
           
       - name: Check downloaded files and structure
         run: ls -R
           
+<<<<<<< HEAD
 =======
       
       - name: Display structure of downloaded files
         run: ls -R
         
 >>>>>>> dev
+=======
+>>>>>>> e2b0d8aa52d756d5c109e65888dfdbc45ca0d4aa
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
