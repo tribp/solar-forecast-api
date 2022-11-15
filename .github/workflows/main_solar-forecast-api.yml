@@ -1,6 +1,7 @@
 # Build and deploy of Python FastAPI app to Azure Web App
 
-name: Build & deploy to Azure Web App
+
+name: Build & deploy to Azure Web App - Prod
 
 on:
   push:

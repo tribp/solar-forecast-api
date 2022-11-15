@@ -1,6 +1,6 @@
 #  Build and deploy Python app to Azure Web App - solar-forecast-api-dev
 
-name: Build & deploy to Azure Web App
+name: Build & deploy Azure Web App - Dev
 
 on:
   push:
