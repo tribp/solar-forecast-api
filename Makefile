@@ -6,7 +6,8 @@ format:
 	#format code
 	black *.py shared_code/*.py
 lint:
-	#pylint
+	#pylint with no refactor or convention msg's
+	pylint --errors-only *.py shared_code/*.py
 test:
 	#test
 deploy:
