@@ -6,13 +6,17 @@ on:
   push:
     branches:
       - dev
+    paths-ignore:
+      - "*.md"
+      - "Dockerfile"
+      - "img/**"
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
-       OPENWEATHERMAP_API_KEY: ${{secrets.OPENWEATHERMAP_API_KEY}}
+      OPENWEATHERMAP_API_KEY: ${{secrets.OPENWEATHERMAP_API_KEY}}
 
     steps:
       - uses: actions/checkout@v3

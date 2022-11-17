@@ -4,13 +4,21 @@
 
 ## DevOps Structure
 
-1. Create Python vertual Environment `python3 -m venv ~/.venv`
+1. Create Python virtual Environment `python3 -m venv ~/.venv`
 2. Create empty files: `Makefile`, `requirements.txt`, `Dockerfile`, `shared_code/__init__.py`
 3. Populate `Makefile`
 4. Improve test coverage
 5.
 
 ### 3. Populate `Makefile`
+
+We create a makefile:
+
+Advantage:
+
+- we can incrementally check every step in the local cli before runnin the Github workflow
+  - eg: make test
+- we simplify the steps in the workflow
 
 ```
 install:
@@ -67,8 +75,20 @@ This will create a new foled `htmlcov`and open index.html in browser (eg via liv
 
 Eliminate unnecessary code or add some code for testing purpuses.
 
-**Eg adding tests:** Here we added some code in the library `weatherforcast.py`to cover or run every single line of code.
+**Eg adding tests:** Here we added some code in the library `weatherforcast.py` to cover or run every single line of code.
 
 ![Adding test code](img/add_test_code.png)
 
 ![Final result](img/coverage_report_100percent.png)
+
+# Appendix:
+
+## Build a your docker image
+
+```
+# Build your image with name = `solar-forecast-api`
+docker build -t solar-forecast-api .
+
+# Run a container it locally
+docker run -p 8080:8080 --name -e OPENWEATHERMAP_API_KEY='<yourAPIkey>' cont_SFA solar-forecast-api
+```
