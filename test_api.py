@@ -3,7 +3,7 @@ from fastapi.testclient import TestClient
 from app import app
 
 test_site = {
-    "date": "10-13-2022",
+    "date": "13-12-2022",
     "location": {"lat": 51.0, "lng": 3.11},
     "altitude": 70,
     "tilt": 35,
