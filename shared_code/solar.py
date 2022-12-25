@@ -126,16 +126,16 @@ def getClearSky(body, **kwargs):
     irradiance.drop(["POA"], inplace=True, axis=1)
 
     # reset index: before date was index -> this wil create new column + we rename it
-    irradiance = irradiance.reset_index().rename(columns={"index": "date"})
+    irradiance = irradiance.reset_index().rename(columns={"index": "dt"})
 
     # convert date from datetime type to iso-string -> needed becaus key in dict must be native python type
     # irradiance["date"] = irradiance["date"].map(lambda x: x.isoformat())
 
     # convert date from datetime type to epoch secs (int64)
-    irradiance["date"] = irradiance["date"].map(lambda x: x.timestamp())
+    irradiance["dt"] = irradiance["dt"].map(lambda x: x.timestamp())
 
     # round power to int
-    irradiance = irradiance.astype({"clear_sky": np.int16, "date": np.int32})
+    irradiance = irradiance.astype({"clear_sky": np.int16, "dt": np.int32})
 
     # we return a pandas.DataFrame
     return irradiance

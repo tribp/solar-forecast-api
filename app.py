@@ -64,7 +64,10 @@ class Installation(BaseModel):
 
     @validator("date")
     def validate_date(cls, value):
-        datetime.strptime(value, "%m-%d-%Y")
+        try:
+            d = datetime.strptime(value, "%d-%m-%Y")
+        except:
+            raise ValueError("date must be format: dd-MM-YYYY")
         return value
 
     @validator("altitude")
