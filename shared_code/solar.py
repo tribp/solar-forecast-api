@@ -64,7 +64,7 @@ def getClearSky(body, **kwargs):
             azimuth (int): 'compas' deg of installation
             totalWattPeak (int): Total Peak power of installation: this is n x solarpanel power
             wattInvertor (int): max power of invertor
-            timezone (strin): official IANA timezone
+            timezone (string): official IANA timezone
         **kwargs:
             startEpochHour (int): sec
             stopEpochHour (int): sec
@@ -126,72 +126,72 @@ def getClearSky(body, **kwargs):
     irradiance.drop(["POA"], inplace=True, axis=1)
 
     # reset index: before date was index -> this wil create new column + we rename it
-    irradiance = irradiance.reset_index().rename(columns={"index": "date"})
+    irradiance = irradiance.reset_index().rename(columns={"index": "dt"})
 
     # convert date from datetime type to iso-string -> needed becaus key in dict must be native python type
     # irradiance["date"] = irradiance["date"].map(lambda x: x.isoformat())
 
     # convert date from datetime type to epoch secs (int64)
-    irradiance["date"] = irradiance["date"].map(lambda x: x.timestamp())
+    irradiance["dt"] = irradiance["dt"].map(lambda x: x.timestamp())
 
     # round power to int
-    irradiance = irradiance.astype({"clear_sky": np.int16, "date": np.int32})
+    irradiance = irradiance.astype({"clear_sky": np.int16, "dt": np.int32})
 
     # we return a pandas.DataFrame
     return irradiance
 
 
-def addForecastToClearSky_df(forecast, clearSky_df):
-    """ClearSky has every 15min power values, forecast has "hourly" weather predictions.
-    We will combine both into a dataframe for every 15min.
-    Note that we gave all xxh:00, xxh:15, xxh:30,xxh:45 identical weather parameter predictions
+# def addForecastToClearSky_df(forecast, clearSky_df):
+#     """ClearSky has every 15min power values, forecast has "hourly" weather predictions.
+#     We will combine both into a dataframe for every 15min.
+#     Note that we gave all xxh:00, xxh:15, xxh:30,xxh:45 identical weather parameter predictions
 
-    Args:
-        forecast (dict): weather parameters for every hour of the specific day
-        clearSky_df (pandas dataFrame): every 15min epoch timestamp(sec) with calculated Clear Sky power in Watt
+#     Args:
+#         forecast (dict): weather parameters for every hour of the specific day
+#         clearSky_df (pandas dataFrame): every 15min epoch timestamp(sec) with calculated Clear Sky power in Watt
 
-    Returns:
-        dataframe: 96 (every 15min of the day)
-            date: epoch (sec)
-            clear_sky: Watt (Calculated Power by clear sky conditions)
-            temp: °K
-            pressure: mbar
-            humidity: %
-            wind_speed: m/s
-            wind_deg: deg
-            clouds_all: % cloudcoverage
-            weather_id: see table
-            day_of_year: 1-366
-    """
-    dataSet = pd.DataFrame(
-        columns=[
-            "temp",
-            "pressure",
-            "humidity",
-            "wind_speed",
-            "wind_deg",
-            "clouds_all",
-            "weather_id",
-            "day_of_year",
-        ],
-        dtype=np.int16,
-    )
-    clearSky = pd.concat([clearSky_df, dataSet])
-    clearSky = clearSky.astype({"date": np.int32})
-    for point in forecast:
-        # search corresponding "hour" timestamp and give the 3 next 15min the same weather data
-        index = clearSky.loc[clearSky["date"] == point["dt"]].index[0]
-        clearSky.loc[index, 2:10] = [
-            point["temp"],
-            point["pressure"],
-            point["humidity"],
-            point["wind_speed"],
-            point["wind_deg"],
-            point["clouds_all"],
-            point["weather_id"],
-            point["day_of_year"],
-        ]
+#     Returns:
+#         dataframe: 96 (every 15min of the day)
+#             date: epoch (sec)
+#             clear_sky: Watt (Calculated Power by clear sky conditions)
+#             temp: °K
+#             pressure: mbar
+#             humidity: %
+#             wind_speed: m/s
+#             wind_deg: deg
+#             clouds_all: % cloudcoverage
+#             weather_id: see table
+#             day_of_year: 1-366
+#     """
+#     dataSet = pd.DataFrame(
+#         columns=[
+#             "temp",
+#             "pressure",
+#             "humidity",
+#             "wind_speed",
+#             "wind_deg",
+#             "clouds_all",
+#             "weather_id",
+#             "day_of_year",
+#         ],
+#         dtype=np.int16,
+#     )
+#     clearSky = pd.concat([clearSky_df, dataSet])
+#     clearSky = clearSky.astype({"date": np.int32})
+#     for point in forecast:
+#         # search corresponding "hour" timestamp and give the 3 next 15min the same weather data
+#         index = clearSky.loc[clearSky["date"] == point["dt"]].index[0]
+#         clearSky.loc[index, 2:10] = [
+#             point["temp"],
+#             point["pressure"],
+#             point["humidity"],
+#             point["wind_speed"],
+#             point["wind_deg"],
+#             point["clouds_all"],
+#             point["weather_id"],
+#             point["day_of_year"],
+#         ]
 
-    logging.info("Success addForeCastToClearSky")
+#     logging.info("Success addForeCastToClearSky")
 
-    return clearSky
+#     return clearSky

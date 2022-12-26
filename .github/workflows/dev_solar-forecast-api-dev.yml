@@ -6,11 +6,17 @@ on:
   push:
     branches:
       - dev
+    paths-ignore:
+      - "*.md"
+      - "Dockerfile"
+      - "img/**"
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      OPENWEATHERMAP_API_KEY: ${{secrets.OPENWEATHERMAP_API_KEY}}
 
     steps:
       - uses: actions/checkout@v3
@@ -26,7 +32,17 @@ jobs:
           source venv/bin/activate
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          make install
+      - name: Format code with black
+        run: |
+          make format
+      - name: Lint with pylint
+        run: |
+          make lint
+      - name: Test with pytest
+        run: |
+          make test
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v3
