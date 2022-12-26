@@ -1,4 +1,3 @@
-
 import logging
 import pandas as pd
 import numpy as np
@@ -21,7 +20,8 @@ def enrichDataFrameWithPrediction(dSet):
 
     # Prepare X for ML: delet cols +  right order of cols
     X = pd.DataFrame()
-    X = dSet.drop(["date", "dt"], axis=1)
+    X = dSet.T.drop_duplicates().T
+    X = dSet.drop(["dt"], axis=1)
 
     # right order model: temp/pressure/humidity/wind_speed/wind_deg/clouds_all/weather_id/clear_sky/day_of_year
     Z = X.iloc[:, [1, 2, 3, 4, 5, 6, 7, 0, 8]]
@@ -44,4 +44,3 @@ def enrichDataFrameWithPrediction(dSet):
 
     logging.info(f"ML succeeded returned:{finalDataFrame.info()}")
     return finalDataFrame
-

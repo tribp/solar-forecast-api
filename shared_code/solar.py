@@ -64,7 +64,7 @@ def getClearSky(body, **kwargs):
             azimuth (int): 'compas' deg of installation
             totalWattPeak (int): Total Peak power of installation: this is n x solarpanel power
             wattInvertor (int): max power of invertor
-            timezone (strin): official IANA timezone
+            timezone (string): official IANA timezone
         **kwargs:
             startEpochHour (int): sec
             stopEpochHour (int): sec
