@@ -87,14 +87,21 @@ def getOpenWeatherData(location):
 
 
 def createForecast_15min(forecast):
-    """Create 15min forecast by copying every hourly to the 3 quarters"""
+    """Create 15min forecast by inserting 15min deltas with same forecast values"""
     forecast_15min = []
-    for prediction in forecast[:-1]:
-        q1, q2, q3 = prediction.copy(), prediction.copy(), prediction.copy()
-        q1["dt"] = prediction["dt"] + 900
-        q2["dt"] = prediction["dt"] + 1800
-        q3["dt"] = prediction["dt"] + 2700
-        forecast_15min.extend([prediction, q1, q2, q3])
+    nr_forecasts = len(forecast)
+
+    for nr in range(nr_forecasts - 1):
+        forecast_15min.append(forecast[nr])
+        q = forecast[nr].copy()
+        q["dt"] = forecast[nr]["dt"] + 900
+        forecast_15min.append(q)
+        ts = q["dt"] + 900
+        while ts < forecast[nr + 1]["dt"]:
+            q = forecast[nr].copy()
+            q["dt"] = ts
+            forecast_15min.append(q)
+            ts += 900
     forecast_15min.append(forecast[-1])
     return forecast_15min
 
