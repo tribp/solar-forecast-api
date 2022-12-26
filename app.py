@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import RedirectResponse
 from pydantic import BaseModel, validator
 from shared_code import weatherforecast, solar, ml
 import pandas as pd
@@ -15,12 +16,17 @@ This API helps you optimizing your Solar energy by predicting. 🚀
 * **clearsky** -> returns 15min Power(Watts) of the day for maximal condition - clear sky.
 * **forecast** -> returns 15min Power(Watts)  + weather for next 2 days.
 
+**Remark:** 
+
+* **clearsky**: works for any date or location on the planet.
+* **forecast**: will only return data for the next 48h. Obviously not for a "date" in the past or further in the future.
+
 ### Format of your solar Installation
 
 **Example:**
 
 {
-  "date": "10-13-2022",
+  "date": "31-03-2022",
   "location": {
     "lat": 51.0,
     "lng": 3.11
@@ -52,8 +58,12 @@ class Location(BaseModel):
         return value
 
 
+now = datetime.now()
+now_string = now.strftime("%d-%m-%Y")
+
+
 class Installation(BaseModel):
-    date: str = "10-13-2022"
+    date: str = now_string
     location: Location
     altitude: int = 70
     tilt: int = 35
@@ -124,7 +134,9 @@ app = FastAPI(
 
 @app.get("/")
 async def root():
-    return {"message": "Make a POST request on /forecast or /clearsky"}
+    # Redirect the root to the Swagger doc page
+    redirect_url = "/docs"
+    return RedirectResponse(redirect_url, status_code=303)
 
 
 @app.post("/forecast")
