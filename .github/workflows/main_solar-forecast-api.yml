@@ -11,6 +11,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      OPENWEATHERMAP_API_KEY: ${{secrets.OPENWEATHERMAP_API_KEY}}
 
     steps:
       - uses: actions/checkout@v3
