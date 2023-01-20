@@ -10,7 +10,7 @@ lint:
 	pylint --errors-only --disable=no-self-argument --extension-pkg-whitelist='pydantic' *.py shared_code/*.py
 test:
 	#test
-	python -m pytest -vv --cov=shared_code test_api.py
+	python -m pytest -vv --cov=shared_code --cov-report term-missing test_api.py
 build:
     #build container - optional
 	#docker build -t solar-forecast-api .

@@ -2,6 +2,10 @@
 [![Build & deploy to Azure Web App](https://github.com/tribp/solar-forecast-api/actions/workflows/main_solar-forecast-api.yml/badge.svg?branch=main)](https://github.com/tribp/solar-forecast-api/actions/workflows/main_solar-forecast-api.yml)
 [![Build & deploy Azure Web App - Dev](https://github.com/tribp/solar-forecast-api/actions/workflows/dev_solar-forecast-api-dev.yml/badge.svg?branch=dev)](https://github.com/tribp/solar-forecast-api/actions/workflows/dev_solar-forecast-api-dev.yml)
 
+### References:
+
+- [Build Real-World Microservices with Python](https://www.youtube.com/watch?v=SqFFCTNyi88&t=2466s)
+
 ## DevOps Structure
 
 1. Create Python virtual Environment `python3 -m venv ~/.venv`

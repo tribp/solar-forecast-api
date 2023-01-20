@@ -140,17 +140,23 @@ async def root():
 
 
 @app.post("/forecast")
-async def calc_forecast(installation: Installation):
+async def calc_forecast(installation: Installation, provider: str = "openweathermap"):
     inst = installation.dict()
 
     # list of dicts : get weather forecast + day_of_year => After this we only need the clearSky power
     # OpnemweatherMap: dt : (date= epoch in sec-10digits)
-    forecast = weatherforecast.getOpenWeatherData(inst.get("location"))
-    forecast_15min = weatherforecast.createForecast_15min(forecast)
-    forecast_15min_df = pd.DataFrame(forecast_15min)
+
+    # depending on query param: ?provider='...' in POST
+    if provider == "openweathermap":
+        forecast_15min_df = weatherforecast.getOpenWeatherData(inst)
+    elif provider == "openmeteo":
+        forecast_15min_df = weatherforecast.getOpenMeteoData(inst)
 
     # Determine startHour and stopHour
-    startEpochHour, stopEpochHour = forecast[0]["dt"], forecast[-1]["dt"]
+    startEpochHour, stopEpochHour = (
+        forecast_15min_df["dt"].iloc[0],
+        forecast_15min_df["dt"].iloc[-1],
+    )
 
     # Calculate ClearSky and return dataFrame (date= epoch in sec-10digits)
     clear_sky_df = pd.DataFrame()
@@ -158,14 +164,13 @@ async def calc_forecast(installation: Installation):
         inst, startEpochHour=startEpochHour, stopEpochHour=stopEpochHour
     )
 
-    # Combine hourly weatherforecast with 15min clearSky
-    dataSet = pd.DataFrame()
-    dataSet = pd.concat([clear_sky_df, forecast_15min_df], axis=1)
+    # fill in 'clearSky' in the provided col (default val=0)
+    forecast_15min_df["clear_sky"] = clear_sky_df["clear_sky"]
     # logging.info(f"Succesfull combined dataSet:{dataSet.info()}")
 
     # Get ML prediction
     Final = pd.DataFrame()
-    Final = ml.enrichDataFrameWithPrediction(dataSet)
+    Final = ml.enrichDataFrameWithPrediction(forecast_15min_df)
 
     msg_dict = Final.to_dict("records")
 
