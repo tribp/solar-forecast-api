@@ -129,8 +129,10 @@ def getOpenMeteoData(installation):
 
     df_OM = pd.DataFrame.from_dict(resp["hourly"])
 
-    # °C to °K
-    df_OM["temperature_2m"] = df_OM["temperature_2m"] + 273.15
+    # °C to °K and round to 1 decimal
+    df_OM["temperature_2m"] = df_OM["temperature_2m"].apply(
+        lambda t: round(t + 273.15, 1)
+    )
 
     # we take naive time, convert into aware time
     df_OM["time"] = df_OM["time"].apply(
