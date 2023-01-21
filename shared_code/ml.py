@@ -29,7 +29,7 @@ def enrichDataFrameWithPrediction(dSet):
     P_dSet = pd.concat([P, dSet], axis=1)
 
     # order: dt/clear_sky/P_predicted/temp/pressure/humidity/wind_speed/wind_deg/clouds_all/weather_id/day_of_year
-    finalDataFrame = P_dSet.iloc[:, [1, 9, 0, 2, 3, 4, 5, 6, 8, 10]]
+    finalDataFrame = P_dSet.iloc[:, [1, 9, 0, 2, 3, 4, 5, 6, 7, 8, 10]]
 
     # Finetuning model
     # power before sunrise and after sunset to zero - model sometomes show small values

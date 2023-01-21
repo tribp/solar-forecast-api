@@ -66,7 +66,7 @@ class Installation(BaseModel):
     date: str = now_string
     location: Location
     altitude: int = 70
-    tilt: int = 35
+    tilt: int = 44
     azimuth: int = 170
     totalWattPeak: int = 7400
     wattInvertor: int = 5040
@@ -140,7 +140,7 @@ async def root():
 
 
 @app.post("/forecast")
-async def calc_forecast(installation: Installation, provider: str = "openweathermap"):
+async def calc_forecast(installation: Installation, provider: str = "openmeteo"):
     inst = installation.dict()
 
     # list of dicts : get weather forecast + day_of_year => After this we only need the clearSky power
