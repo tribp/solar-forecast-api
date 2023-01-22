@@ -24,8 +24,8 @@ TOC:
 
 **Predicting:**
 
-- `Power Prediction` (Watt) for any given time for the next 48h
-- `Energy Prediction` (kWh) for the next 48h
+- `Power Prediction` (Watt) for any given time for the next 7 days (or 48)
+- `Energy Prediction` (kWh) for the next 7 days (or 48h)
 - `Typical Prediction` (kWh) per month and `Total`per year
 
 <img src= "./img/solar-forecast_UI_browser.jpg" width="400px">
