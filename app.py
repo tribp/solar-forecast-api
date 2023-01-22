@@ -14,12 +14,12 @@ This API helps you optimizing your Solar energy by predicting. 🚀
 ### How ?
 
 * **clearsky** -> returns 15min Power(Watts) of the day for maximal condition - clear sky.
-* **forecast** -> returns 15min Power(Watts)  + weather for next 2 days.
+* **forecast** -> returns 15min Power(Watts)  + weather for next 7 days. (or 48h with `provider=openweathermap`)
 
 **Remark:** 
 
 * **clearsky**: works for any date or location on the planet.
-* **forecast**: will only return data for the next 48h. Obviously not for a "date" in the past or further in the future.
+* **forecast**: will only return data for the next 7d (or 48h). Obviously not for a "date" in the past or further in the future.
 
 ### Format of your solar Installation
 
