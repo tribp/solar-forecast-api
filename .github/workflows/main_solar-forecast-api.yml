@@ -6,6 +6,10 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - "*.md"
+      - "Dockerfile"
+      - "img/**"
   workflow_dispatch:
 
 jobs:
