@@ -24,7 +24,7 @@ TOC:
 
 **Predicting:**
 
-- `Power Prediction` (Watt) for any given time for the next 7 days (or 48)
+- `Power Prediction` (Watt) for any given time for the next 7 days (or 48h)
 - `Energy Prediction` (kWh) for the next 7 days (or 48h)
 - `Typical Prediction` (kWh) per month and `Total`per year
 
