@@ -6,7 +6,7 @@
 
 # Solar - Forecast
 
-TOC:
+OC:
 
 1. Intro
 2. Concept
@@ -28,7 +28,7 @@ TOC:
 - `Energy Prediction` (kWh) for the next 7 days (or 48h)
 - `Typical Prediction` (kWh) per month and `Total`per year
 
-<img src= "./img/solar-forecast_UI_browser.jpg" width="400px">
+<img src= "./img/solar-forecast_UI_browser.jpg" width="600px">
 
 ## 2. Concept
 
@@ -36,11 +36,15 @@ There are 2 parts:
 
 **API:**
 
-This is the main part, typically used as a service for a HEMS (Home Energy Management System). An API [solar-forecast-api](https://solar-forecast-api.azurewebsites.net) that gets the `installation data` in the body of a POST request and provides a response for the `clear sky` or `prediction`. You can optionaly specify a "weather provider" (open-meteo or openweathermap) by adding a "query" parameter `provider`in the POST request.
+[api.solar-forecast.org](https://api.solar-forecast.org) is the main part, typically used as a service for a HEMS (Home Energy Management System). The API gets the `installation data` in the body of a POST request and provides a response for the `clear sky` or `prediction`. You can optionaly specify a "weather provider" (open-meteo or openweathermap) by adding a "query" parameter `provider` in the POST request.
+
+See [details](https://api.solar-forecast.org/docs) or `perform tests` in the `swagger` documentation.
+
+**Example:**
 
 ```
 curl -X 'POST' \
-  'https://solar-forecast-api.azurewebsites.net/forecast?provider=openmeteo' \
+  'https://api.solar-forecast.org/forecast?provider=openmeteo' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
