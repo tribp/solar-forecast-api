@@ -14,7 +14,7 @@ This API helps you optimizing your Solar energy by predicting. 🚀
 ### How ?
 
 * **clearsky** -> returns 15min Power(Watts) of the day for maximal condition - clear sky.
-* **forecast** -> returns 15min Power(Watts)  + weather for next 7 days. (or 48h with `provider=openweathermap`)
+* **forecast** -> returns 15min Power(Watts)  + weather for next 7 days.
 
 **Remark:** 
 
@@ -120,7 +120,7 @@ class Installation(BaseModel):
 app = FastAPI(
     title="solar-forecast-api",
     description=description,
-    version="0.0.1",
+    version="0.0.2",
     contact={
         "name": "Peter Tribout",
         "url": "https://github.com/tribp",
@@ -140,13 +140,16 @@ async def root():
 
 
 @app.post("/forecast")
-async def calc_forecast(installation: Installation, provider: str = "openmeteo"):
+async def calc_forecast(installation: Installation):
     inst = installation.dict()
 
     # list of dicts : get weather forecast + day_of_year => After this we only need the clearSky power
     # OpnemweatherMap: dt : (date= epoch in sec-10digits)
 
     # depending on query param: ?provider='...' in POST
+    # We only support openmeteo anymore since openweathermap is not free anymore
+    provider = "openmeteo"
+
     if provider == "openweathermap":
         forecast_15min_df = weatherforecast.getOpenWeatherData(inst)
     elif provider == "openmeteo":

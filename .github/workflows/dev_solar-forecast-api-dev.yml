@@ -1,4 +1,4 @@
-#  Build and deploy Python app to Azure Web App - solar-forecast-api-dev
+#  Build and deploy Python app to Azure Web App - solar-forecast-api-dev.
 
 name: Build & deploy Azure Web App - Dev
 
@@ -17,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       OPENWEATHERMAP_API_KEY: ${{secrets.OPENWEATHERMAP_API_KEY}}
+      SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL: "true"
 
     steps:
       - uses: actions/checkout@v3
@@ -45,7 +46,7 @@ jobs:
           make test
 
       - name: Upload artifact for deployment jobs
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: python-app
           path: |
@@ -61,7 +62,7 @@ jobs:
 
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: python-app
           path: .

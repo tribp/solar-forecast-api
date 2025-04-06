@@ -22,6 +22,7 @@ def enrichDataFrameWithPrediction(dSet):
     X = pd.DataFrame()
     X = dSet.T.drop_duplicates().T
     X = dSet.drop(["dt"], axis=1)
+    X = X.fillna(0)
 
     # right order model: temp/pressure/humidity/wind_speed/wind_deg/clouds_all/weather_id/clear_sky/day_of_year
     power = mlp.predict(X)
@@ -36,6 +37,9 @@ def enrichDataFrameWithPrediction(dSet):
     finalDataFrame["P_predicted"] = finalDataFrame.apply(
         eliminate_power_outside_sunrise_sunset, axis=1
     )
+    # we clip the produced power to stay in the enveloppe of the clear sky(Theoretical max)
+    finalDataFrame["P_predicted"] = finalDataFrame[["P_predicted", "clear_sky"]].min(axis=1)
+
 
     logging.info(f"ML succeeded returned:{finalDataFrame.info()}")
     return finalDataFrame

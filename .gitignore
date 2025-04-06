@@ -1,3 +1,6 @@
+# Markdown files to exclude from git
+DEVELOPER_DOC.md
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 __pycache__
