@@ -2,7 +2,7 @@ import os
 import json
 import logging
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta
 import pytz
 
 import pandas as pd
@@ -110,6 +110,41 @@ def map_weather_code(code):
         return code
 
 
+def create_15min_by_interpolation(df_orig, interp_cols):
+    """Create 15min forecast by inserting 15min deltas by interpolation only for the Interpolated columns, rest will be copied"""
+    df = df_orig.copy()
+
+    # Columns to just copy (i.e., not interpolated)
+    copy_cols = [col for col in df.columns if col not in interp_cols + ["dt"]]
+
+    # Set dt as datetime index if not already
+    df["dt"] = pd.to_datetime(df["dt"], unit='s')
+    df.set_index("dt", inplace=True)
+
+    # Create a new datetime index with 15-minute frequency and last hour(23h00) has 3 extra 15min
+    extended_end = df.index.max() + timedelta(minutes=45)
+    new_index = pd.date_range(start=df.index.min(), end=extended_end, freq="15min")
+
+    # Reindex the dataframe to 15-minute intervals
+    df_15min = df.reindex(new_index)
+
+    # Interpolate the numeric columns
+    df_15min[interp_cols] = df_15min[interp_cols].interpolate(method="time")
+
+    # Forward fill the copied fields
+    df_15min[copy_cols] = df_15min[copy_cols].ffill()
+
+    # Reset index and convert datetime back to UNIX timestamp (seconds)
+    df_15min = df_15min.reset_index()
+    df_15min.rename(columns={"index": "dt"}, inplace=True)
+    df_15min["dt"] = df_15min["dt"].astype("int64") // 10**9
+
+    return df_15min
+
+
+   
+
+
 def getOpenMeteoData(installation):
     """Gets a dict {lat:x,lng:y} and calls open-meteo api and returns  a weather list.
     Every item of the list has the 'hourly' forecast
@@ -172,27 +207,22 @@ def getOpenMeteoData(installation):
         },
     )
 
-    # create copie for every 15 min and merge
-    df_15 = df_OM.copy()
-    df_15["dt"] = df_15["dt"] + 900
-    df_30 = df_OM.copy()
-    df_30["dt"] = df_OM["dt"] + 1800
-    df_45 = df_OM.copy()
-    df_45["dt"] = df_OM["dt"] + 2700
+    # Columns to interpolate
+    interp_cols = [
+        "temp", "pressure", "humidity", "wind_speed", "wind_deg", "clouds_all"
+    ]
+    # Create 15min forecast by inserting 15min deltas by interpolation only for the Interpolated columns, rest will be copied
+    df_15 = create_15min_by_interpolation(df_OM, interp_cols)
 
-    weather = df_OM.merge(df_15, how="outer")
-    weather = weather.merge(df_30, how="outer")
-    weather = weather.merge(df_45, how="outer")
+    # round to 1 decimal
+    df_15[interp_cols] = df_15[interp_cols].apply(lambda x: round(x, 1))
 
     # sort by timestamp 'dt'
-    weather.sort_values(["dt"], inplace=True)
-    weather.reset_index(drop=True, inplace=True)
-
-    # delete last 3 rows: we do not need +15min,30min,45min for last 'hour'
-    weather = weather.iloc[:-2]
+    df_15.sort_values(["dt"], inplace=True)
+    df_15.reset_index(drop=True, inplace=True)
 
     logging.info(f"Succes Open-Meteo API call")
-    return weather
+    return df_15
 
 
 def getOpenWeatherData(installation):
@@ -206,7 +236,8 @@ def getOpenWeatherData(installation):
         _type_ DataFrame: dt	temp	pressure	humidity	wind_speed	wind_deg	clouds_all	weather_id	clear_sky	day_of_year
     """
     location = installation.get("location")
-    url = f'https://api.openweathermap.org/data/2.5/onecall?lat={location["lat"]}&lon={location["lng"]}&appid={API_KEY}'
+    # remark: we use the openweathermap API v3 (3.0) and not the v2 (2.5) since june 2024
+    url = f'https://api.openweathermap.org/data/3.0/onecall?lat={location["lat"]}&lon={location["lng"]}&appid={API_KEY}'
     resp = requests.get(url).json()
 
     df_OWM = pd.DataFrame.from_dict(resp["hourly"])
