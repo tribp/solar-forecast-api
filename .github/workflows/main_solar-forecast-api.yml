@@ -17,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       OPENWEATHERMAP_API_KEY: ${{secrets.OPENWEATHERMAP_API_KEY}}
+      SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL: "true"
 
     steps:
       - uses: actions/checkout@v3
