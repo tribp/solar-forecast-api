@@ -77,3 +77,4 @@ jobs:
           app-name: "solar-forecast-api-dev"
           slot-name: "Production"
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F0113A330FAD402CB768E1D2E03CDE29 }}
+          clean: true
