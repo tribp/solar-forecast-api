@@ -106,7 +106,7 @@ class Installation(BaseModel):
 
     @validator("wattInvertor")
     def validate_wattInvertor(cls, value):
-        if not (0 <= value < 10000):
+        if not (0 <= value <= 10000):
             raise ValueError("wattInvertor must be between 0 and 10000")
         return value
 
