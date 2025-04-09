@@ -1,11 +1,19 @@
+from pathlib import Path
 import logging
 import pandas as pd
 import numpy as np
 import pickle
 import sklearn
 
-myModel_file = open("solar_mlp_model.pkl", "rb")
-mlp = pickle.load(myModel_file)
+
+# Get the absolute path to the current file
+base_path = Path(__file__).resolve().parent
+
+# Path to your model file
+model_path = base_path / "model" / "solar_mlp_model.pkl"
+
+with open(model_path, "rb") as myModel_file:
+    mlp = pickle.load(myModel_file)
 
 # helper function clips positive Power to zero before sunrise and after sunset
 def eliminate_power_outside_sunrise_sunset(row):
