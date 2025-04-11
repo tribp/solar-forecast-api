@@ -65,7 +65,7 @@ curl -X 'POST' \
 
 **UI - User Inreface:**
 
-This is a web application [www.solar-forecast.org](https://solar-forecast.org) for visualizing the prediction or as aid for calculating your PV installation or exploring different orientations, dimensions, tilts or seasonal influences like winter and summer.
+This is a web application [www.solar-forecast.org](https://www.solar-forecast.org) for visualizing the prediction or as aid for calculating your PV installation or exploring different orientations, dimensions, tilts or seasonal influences like winter and summer.
 
 <img src= "./img/project.png" width="800px">
 
